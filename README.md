@@ -2,7 +2,7 @@
 
 ### Objectives 
 
-- Learn various applications of when it is good to use a hash.
+- Learn that hashes are mainly good for problems involving repeated lookup. 
 
 ### Review
 
@@ -18,7 +18,7 @@ So let's think for a minute about where we should use an array, and where we sho
 | -------------                            |:-------------:|
 | Ordering elements based on criteria      | Element in collection?  |
 | Finding the first or last element (max or min)| Retrieving associated information|
-|finding rank of an element (eg. 'c' is 3rd highest) |
+|Finding rank of an element (eg. 'c' is 3rd highest) |
 
 
 So **repeated lookup of information** is better performed by a hash.
@@ -47,6 +47,8 @@ Caching is similar to the problem of de-duplication.  Caching is a technique whe
 
 	Say there are types of requests repeatedly made, for example for the same CSS stylesheet.  A browser, or a server see if it has already requested the information, and if so, retrieve the information in a local hash.	
 
+	![](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/images/http-cache-control-highlight.png)
+
 * Caching Previous Calculations - Chess Moves
 
 	Consider a computer program that calculates chess moves.  For any given point of the game, there are various moves and counter moves that can be made.  For the computer to avoid recalculating the quality of a given move, it may store moves already considered in a hash.  Then it can quickly see if it had already considered a move, and avoid recalculating its quality. 
@@ -55,7 +57,7 @@ C. Gatekeeping/Restricting
 
 * Routers and Internet 
 
-	Sometimes, a web application will block network traffic from ip addresses.  This is another problem of repeated lookup that can be solved from a hash. 
+	Sometimes, a web application will block network traffic from IP addresses.  This is another problem of repeated lookup that can be solved from a hash. 
 
 * Forbidden Passwords
 	
@@ -65,6 +67,8 @@ C. Gatekeeping/Restricting
 
 	Spell checkers seems very similar to our forbidden passwords problem.  Here, we store an entire language's collection of words, and each time a user types in a word we see that it is in our hash.  If it is not in our hash we indicate to the user that the word is mis-spelled.
 	
+	![](http://www.checkyourtext.com/img/xgrammar-check.gif.pagespeed.ic.F1yn75Yep_.png)
+
 D. Search
  
 * Search 
@@ -72,6 +76,8 @@ D. Search
 	Another way of saying repeated lookup is really that we are performing a search.  So in previous lessons we have learned various a sorting algorithm like merge sort.  Then, sometimes we checked for inclusion by employing binary search. 
 
 	However, hashes give us a faster mechanism to determine if a value is in our collection.  Remember that sorting an array takes O(n log n) and that employing binary search takes O(log n).  With a hash, we can place every element into a hash in O(n) time and determine if an element is in a hash in O(1) time.  
+	
+	![](https://www.internetmarketingninjas.com/blog/wp-content/uploads/2013/06/misspellings-02.jpg)
 
 ### Summary
 
