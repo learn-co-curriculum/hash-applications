@@ -1,118 +1,82 @@
-## Hash Table
+## Hash Table Applications
 
 ### Objectives 
-* Learn the benefits of using a hash table over arrays and linked lists.
-* Learn the components of a hash table.
-* Learn about collisions and how to resolve them.
-* Learn about the attributes of a good hash function. 
+
+- Learn various applications of when it is good to use a hash.
 
 ### Review
 
-Previously we have talked about arrays and linked lists.   	
+In the last section we learned how a hash table involves inputting a key to a hash hash function to determine precisely where to retrieve and look up values related to a key.  The benefit of this is that given a key, we can quickly determine in O(1) time, whether that value is in the hash.  Similarly to how we can determine if a value is in a specific index in O(1) time for an array.
 
-##### Arrays 
+### Benefits
 
-Remember that with arrays we store elements contiguously in memory.  This means that each element is evenly spaced in memory from the next one.   Because of this, when we initialize a new array also must allocate a fixed amount of space in memory to store the array, and when the array runs out of space, we need to copy over the elements into a different spot.  
+The benefits of this is that hashes become quite good at determining inclusion of a key, and at finding specific data related to a key in O(1) time.  While hashes maintain a key value data structure, because hashes work by having a hash function return a location that does not map to any order of the keys or any other information - but approaches an almost random return value - hashes are not good at ordering or sorting information.  So problems related to ordering or sorting information, would much better be handled by a data structure like a sorted array.   
 
-However, the benefit of using an array is that because each element is in a predictable location, we can determine where to access an element at a specific index in the array and therefore can retrieve elements in constant time.
+Here are some operations that should be used by a sorted array: 
+ * ordering elements based on criteria
+ * finding the first or last element based on a criteria
+ * finding what rank a specific element is
+
+Here are operations that should be used by a hash
+	* Is the element with the related key in the collection
+	* Retrieving processed information 
+
+So **repeated lookup of information** is better performed by a hash.
+
+### Repeated Lookup Problems
+
+Now, we can focus our question a little further: what are some examples of where we are solving repeated lookup. 
+
+A. Uniqueness/Deduplication
+
+*  Unique Visitors to a website
+
+	Say we want to see all of the unique visitors to a website.  We might do so by storing a list of ip addresses to represent the computers that have visited our website.  Because we want only one key associated with each ip address, this is a problem with repeated lookup.  Every time we receive a request to our website, we look to see if the computer making the request has already been stored in our hash.
 	
-##### Linked Lists 
+* Web Crawlers
 
-Elements in a linked list are not contiguous in memory - instead we can store an element anywhere in memory, with each element having a pointer that tells us the location of the next element.  The benefit of this is that we can our linked lists can continue to grow in size and we will not run out of space.  But the price paid for dynamic size is that to access an element, we need to follow the pointers from node to node, which makes the time to retrieve an element is O(n).
+	Google's page rank algorithm ranks the importance of a website by looking at which other websites linking to it.  Now, Google's algorithm wants to control for uniqueness.  That is, it should allocate more importance to a website if the links come from different website as opposed to all from the same website.  So Google can use a hash to quickly lookup to see if a website has already linked to another website.      	
+	
+B. Caching/Memory
 
-##### The Goal
+Caching is similar to the problem of de-duplication.  Here we prevent against solving a problem again by storing the result of the solution we previously stored.  
+	
+* Caching Webpages  
 
-Our goal is to have a mechanism that allows to predict precisely where a piece of data is (like we can with an array), while still allowing our data structure to grow (like we can with a hash).
+	Say there are types of requests repeatedly made, for example for the same CSS style sheet.  A browser, or a server can simply store a collection of cached requests and for each associated value the corresponding request.     	
 
-### Hash Tables
+* Caching Previous Calculations - Chess Moves
 
-A hash table is an array where we place the element in a specific location based on data from that element and a function.  So we use the **hash function** to determine where exactly to store a given key.  Later, use the same hash function to determine where to search for a given key.
-
-Let's try this with an example.  Imagine we would like to use our hash table to store a collection of books.  We'll determine at which index to place the book by using the first number of each section of the Dewey Decimal System, which we conveniently have below.
-
-![](https://s3-us-west-2.amazonaws.com/curriculum-content/algorithms/dewey-decimal-arrangement.jpg)
-
-We have the following books: *The Bible*, *Alexander Hamilton*, *Introduction to Physics*, and *War and Peace*.  Based on our hash function, we store the books in the following locations:
-
-| Index        |Book           |
-| ------------- |:-------------:|
-| 000 |  |
-| 100 |  |
-| 200 | *The Bible*|
-| 300 | |
-| 400 | |
-| 500 | *Introduction to Physics*|
-| 600 | |
-| 700 | |
-| 800 | *War and Peace* |
-| 900 | *Alexander Hamilton*|
-
-So now when we need to retrieve a book, we do not need to look through every index to find our books, instead we just look at the place of the book based on the Dewey Decimal System. 
-
-![](http://i2.cdn.cnn.com/cnnnext/dam/assets/131126190621-geroge-peabody-library-horizontal-large-gallery.jpg)
-> A massive library
-
-So we use our formula to tell us both where to insert a book, and also where to look to retrieve a book.  If someone asks us if *Eloquent Javascript* is in our hash table, we simply visit our index at location 600, see that nothing is there, and can confidently reply that the book is not located there.  Note that the indices are not necessarily contiguous, as they are in an array, but because our formula tells us exactly where to place a book, and also where to retrieve a book we are able to retrieve and insert an element in constant time.
-
-So with a hash table, we look at the data in our element, run it through our hash function to determine where to place the element, and because the hash function does not rely on our elements being evenly spaced apart, we do not need to allocate a contiguous chunk of memory for our hash table.  So we achieve our goal of constant time for inserting and retrieving elements while having a data structure that can grow. 
-
+	Consider a computer program that calculates chess moves.  For any given point of the game, there are various moves and counter moves that can be made.  For the computer to avoid recalculating the quality of a given move, it may store moves already considered in a hash.  Then it can quickly see if it had already considered a move, and avoid recalculating its quality. 
  
-#### The Problem: Collision
+C. Gatekeeping/Restricting
 
-Our hash table currently looks like the following: 
+* Routers and Internet 
 
-| Index        |Book           |
-| ------------- |:-------------:|
-| 000 |  |
-| 100 |  |
-| 200 | *The Bible*|
-| 300 | |
-| 400 | |
-| 500 | *Introduction to Physics*|
-| 600 | |
-| 700 | |
-| 800 | *War and Peace* |
-| 900 | *Alexander Hamilton*|
+	Sometimes, a web application will block network traffic from ip addresses.  This is another problem of repeated lookup that can be solved from a hash. 
 
-Now what happens if we need to store another book, this time *Introduction to Biology*.  Well, our Dewey Decimal System tells us to store the key at the location with index 500.  The only problem is that the slot is already filled.  We have just encountered a **collision**.  A collision is where our hash function outputs a value that already is occupied in our hash table.  
+* Forbidden Passwords
+	
+	When creating a new password, there are a set of passwords which are not allowed.  For example, maybe we do not want to permit a user to signup with generic passwords like 'password' or 'letmein'.  We can store the list of forbidden passwords in a hash and if the password is on the list we throw an error.     
+	
+* Spell Checkers 
 
-To handle our collision we apply separate chaining.  With separate chaining, each index points to a linked list.  So in our example above we could place both *Introduction to Physics* and *Introduction to Biology* in the place linked list is located at index 500.  Applying the separate chaining technique, our hash table will look like the following:  
+	Spell checkers seems very similar to our forbidden passwords problem.  Here, we store an entire language's collection of words, and each time a user types in a word we see that it is in our hash.  If it is not in our hash we indicate to the user that the word is mis-spelled.
+	
+D. Search 
 
-| Index        |Book           |
-| ------------- |:-------------:|
-| 000 |  |
-| 100 |  |
-| 200 | [ "*The Bible*" ]|
-| 300 | |
-| 400 | |
-| 500 | [ "*Introduction to Physics*", "*Introduction to Biology*" ]|
-| 600 | |
-| 700 | |
-| 800 | [ "*War and Peace*" ]|
-| 900 | [ "*Alexander Hamilton*" ]|
+Another way of saying repeated lookup is really that we are performing a search.  So in previous lessons we have learned various a sorting algorithm like merge sort.  Then, sometimes we checked for inclusion by employing binary search. 
 
-Note that in the worse case scenario, all of our inserted elements collide and we have to traverse a linked list of length n to retrieve an element, so we have O(n).  However, on average collisions do not occur, so we retrieve constant time for lookup, insertion and deletion *on average*.  
-
-### Choosing a good hash function
-
-So choose a hash function that minimizes the chance of a collision occurring.  Some properties of a good hash function. 
-
-1. Makes use of all information provided by a given key to maximize the number of possible hash values.  So books of two different titles should map to two different values. 
-2. Our hash function should produce a hash value that is distributed evenly across the table, which avoids long linked lists at certain keys.
-3. Maps similar keys to very different values - making collisions much less likely.
-4. Also hash function called frequently so should employ simple and quick introductions.  
+However, hashes give us a faster mechanism to determine if a value is in our collection.  Remember that sorting an array takes O(n log n) and that employing binary search takes O(log n).  With a hash, we can place every element into a hash in O(n) time and determine if an element is in a hash in O(1) time.  
 
 ### Summary
 
-In this function we learned about hash tables.  Hash tables place the value of an element into a hash function which outputs a hash value.  The hash value determines where to place the element.  Because a hash function produces the same hash value for a given element, it also gives us fast lookup time to retrieve an element.  
-
-When a hash function ouputs the same hash value for two different elements we have a collision.  We can resolve a collision by employing separate chaining where each hash value points to a linked list, and when there is a collision we attach the element to the linked list.  
-
-Because retrieving elements from a linked list is O(n), we try to choose a hash function that avoids collisions.  Because we must use our hash function to insert, delete, and retrieve elements we also choose a fast hash function.
-
+We now see that we really only use hashes for one thing: repeated lookup.  Unlike arrays, hashes are not good at determining a min or max, or other operations that depend on the relative order of a list of elements.  However, this problem of repeated lookup occurs in many operations.  It occurs in determining uniqueness, in caching and remembering information, in checking if something is restricted, and in searching for inclusion.
 
 
 	
- 
 
+	
 
+		
+	
