@@ -1,8 +1,8 @@
 ## Hash Table Applications
 
-### Objectives 
+### Objectives
 
-- Learn that hashes are mainly good for problems involving repeated lookup. 
+- Learn that hashes are mainly good for problems involving repeated lookup.
 
 ### Review
 
@@ -32,61 +32,53 @@ A. Uniqueness/Deduplication
 *  Unique Visitors to a website
 
 	Say we want to see all of the unique visitors to a website.  We might do so by storing a list of IP addresses to represent the computers that have visited our website.  Because we want only one key associated with each IP address, this is a problem of repeated lookup.  Every time we receive a request to our website, we look to see if the computer making the request has already been stored in our hash.
-	
+
 * Web Crawlers
 
 	Google's page rank algorithm ranks the importance of a website by looking at which other websites linking to it.  Now, Google's algorithm wants to control for uniqueness.  That is, it should allocate more importance to a website if the links come from different websites as opposed to all from the same website.  So Google can use a hash to quickly lookup to see if it has already recorded the link between two websites.      	
-	
-	![](http://www.searchengineoptimizations.co/wp-content/uploads/2011/01/inbound-linking.gif)
-	
+
+	![](https://s3.amazonaws.com/learn-verified/inbound-linking.gif)
+
 B. Caching/Memory
 
 Caching is similar to the problem of de-duplication.  Caching is a technique whereby we prevent running a calculatin again by instead storing the result of the solution we previously stored.  
-	
+
 * Caching Webpages  
 
-	Say there are types of requests repeatedly made, for example for the same CSS stylesheet.  A browser, or a server see if it has already requested the information, and if so, retrieve the information in a local hash.	
+	Say there are types of requests repeatedly made, for example for the same CSS stylesheet.  A browser, or a server see if it has already requested the information, and if so, retrieve the information in a local hash.
 
-	![](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/images/http-cache-control-highlight.png)
+	![](https://s3.amazonaws.com/learn-verified/http-cache-control-highlight.png)
 
 * Caching Previous Calculations - Chess Moves
 
-	Consider a computer program that calculates chess moves.  For any given point of the game, there are various moves and counter moves that can be made.  For the computer to avoid recalculating the quality of a given move, it may store moves already considered in a hash.  Then it can quickly see if it had already considered a move, and avoid recalculating its quality. 
- 
+	Consider a computer program that calculates chess moves.  For any given point of the game, there are various moves and counter moves that can be made.  For the computer to avoid recalculating the quality of a given move, it may store moves already considered in a hash.  Then it can quickly see if it had already considered a move, and avoid recalculating its quality.
+
 C. Gatekeeping/Restricting
 
-* Routers and Internet 
+* Routers and Internet
 
-	Sometimes, a web application will block network traffic from IP addresses.  This is another problem of repeated lookup that can be solved from a hash. 
+	Sometimes, a web application will block network traffic from IP addresses.  This is another problem of repeated lookup that can be solved from a hash.
 
 * Forbidden Passwords
-	
+
 	When creating a new password, there are a set of passwords which are not allowed.  For example, maybe we do not want to permit a user to signup with generic passwords like 'password' or 'letmein'.  We can store the list of forbidden passwords in a hash and if the password is on the list we throw an error.     
-	
-* Spell Checkers 
+
+* Spell Checkers
 
 	Spell checkers seems very similar to our forbidden passwords problem.  Here, we store an entire language's collection of words, and each time a user types in a word we see that it is in our hash.  If it is not in our hash we indicate to the user that the word is mis-spelled.
-	
-	![](http://www.checkyourtext.com/img/xgrammar-check.gif.pagespeed.ic.F1yn75Yep_.png)
+
+	![](https://s3.amazonaws.com/learn-verified/spell-checker.png)
 
 D. Search
- 
-* Search 
 
-	Another way of saying repeated lookup is really that we are performing a search.  So in previous lessons we have learned various a sorting algorithm like merge sort.  Then, sometimes we checked for inclusion by employing binary search. 
+* Search
+
+	Another way of saying repeated lookup is really that we are performing a search.  So in previous lessons we have learned various a sorting algorithm like merge sort.  Then, sometimes we checked for inclusion by employing binary search.
 
 	However, hashes give us a faster mechanism to determine if a value is in our collection.  Remember that sorting an array takes O(n log n) and that employing binary search takes O(log n).  With a hash, we can place every element into a hash in O(n) time and determine if an element is in a hash in O(1) time.  
-	
-	![](https://www.internetmarketingninjas.com/blog/wp-content/uploads/2013/06/misspellings-02.jpg)
+
+	![](https://s3.amazonaws.com/learn-verified/misspellings-02.jpg)
 
 ### Summary
 
 We now see that we really only use hashes for one thing: repeated lookup.  Unlike arrays, hashes are not good at determining a min or max, or other operations that depend on the relative order of a list of elements.  However, this problem of repeated lookup occurs in many operations.  It occurs in determining uniqueness, in caching and remembering information, in checking if something is restricted, and in searching for inclusion.  In the exercises that follow, we will see examples of how and when to move from using an array to using a hash.
-
-
-	
-
-	
-
-		
-	
